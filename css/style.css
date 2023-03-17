@@ -1,0 +1,16 @@
+.pizza-imagen {
+  height: 100px;
+  width: 100px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.producto {
+  height: 400px;
+  width: 300px;
+}

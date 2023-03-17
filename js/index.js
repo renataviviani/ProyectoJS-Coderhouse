@@ -1,89 +1,71 @@
-const Total = () => {
-  let total = 0;
-  carrito.forEach((el) => {
-    total += el.precio;
+const productos = [
+  {
+    id: "pizza-muzzarella",
+    nombre: "Pizza de Muzzarella",
+    descripción: "Masa con salsa de tomate y MUCHO queso muzzarella",
+    precio: 1500,
+    imagen: "./img/pizza-muzzarella.jpg",
+  },
+  {
+    id: "pizza-napolitana",
+    nombre: "Pizza Napolitana",
+    descripción: "A la Muzzarella le agregamos tomates frescos y ajo",
+    precio: 1700,
+    imagen: "./img/pizza-napolitana.jpg",
+  },
+  {
+    id: "pizza-jamonymorrones",
+    nombre: "Pizza de Jamón y Morrones",
+    descripción: "A la Muzzarella le agregamos jamón y morrones",
+    precio: 1800,
+    imagen: "./img/pizza-jamonymorrones.jpg",
+  },
+];
+
+const container = document.querySelector("#container");
+let botonesComprar = document.querySelectorAll(".b-comprar");
+
+function comprar() {
+  productos.forEach((producto) => {
+    const div = document.createElement("div");
+    div.classList.add("producto");
+    div.innerHTML = `
+    <img src=${producto.imagen} class="pizza-imagen" alt="${producto.nombre}" />
+        <div id="informacion">
+            <h2 class="pizza-nombre">${producto.nombre}</h2>
+            <p class="pizza-descripcion">${producto.descripción}</p>
+            <h3 class="pizza-precio">$${producto.precio}</h3>  
+          <button class="b-comprar" id=${producto.id}>Comprar</button>
+        </div>`;
+
+    container.append(div);
   });
-  alert("TOTAL: $" + total);
-};
-
-const verCarrito = () => {
-  let mensaje = `Está comprando: 
-     `;
-  carrito.forEach((el, index) => {
-    mensaje += `
-                ${index + 1}- ${el.nombre} $${el.precio}
-                `;
-  });
-  alert(mensaje);
-};
-
-const comprar = () => {
-  let mensaje = `Seleccione que va a comprar de la siguiente lista: 
-    `;
-  productos.forEach((el, index) => {
-    mensaje += ` 
-                ${index + 1}- ${el.nombre}: ${el.descripcion}= $${el.precio}
-                `;
-  });
-  let bienvenido = parseInt(prompt(mensaje));
-  carrito.push(productos[bienvenido - 1]);
-};
-
-const carrito = [];
-
-class producto {
-  constructor(nombre, descripcion, precio) {
-    this.nombre = nombre;
-    this.descripcion = descripcion;
-    this.precio = precio;
-  }
+  aBotonesComprar();
+  console.log(botonesComprar);
 }
 
-const muzzarella = new producto(
-  "PIZZA MUZZARELLA",
-  "Masa con salsa de tomate y MUCHO queso muzzarella",
-  1500
-);
-const napolitana = new producto(
-  "PIZZA NAPOLITANA",
-  "A la Muzzarella le agregamos tomates frescos y ajo",
-  1600
-);
-const jamonYmorrones = new producto(
-  "PIZZA JAMÓN Y MORRONES",
-  "A la Muzzarella le agregamos jamón y morrones",
-  1700
-);
+comprar();
 
-const productos = [muzzarella, napolitana, jamonYmorrones];
+function aBotonesComprar() {
+  botonesComprar = document.querySelectorAll(".b-comprar");
 
-let bienvenido = parseInt(
-  prompt(
-    "Bienvenido, ¿que desea hacer? \n \n 1- Comprar \n 2- Ver carrito \n 3- Ver total \n 4- Salir"
-  )
-);
+  botonesComprar.forEach((boton) => {
+    boton.addEventListener("click", agregarAlCarrito);
+  });
+}
 
-while (bienvenido != 4) {
-  switch (bienvenido) {
-    case 1:
-      comprar();
-      break;
-    case 2:
-      verCarrito();
-      break;
-    case 3:
-      Total();
-      break;
-    default:
-      break;
-  }
-  bienvenido = parseInt(
-    prompt(
-      "Bienvenido, ¿que desea hacer? \n \n 1- Comprar \n 2- Ver carrito \n 3- Ver total \n 4- Salir"
-    )
+const productosCarrito = [];
+
+function agregarAlCarrito(e) {
+  const idBoton = e.currentTarget.id;
+
+  const productoAgregado = productos.find(
+    (producto) => producto.id === idBoton
   );
-}
 
-if (bienvenido == 4) {
-  alert("No se quede sin probar nuestras pizzas!");
+  if (productosCarrito.some((producto) => producto.id === idBoton)) {
+  } else {
+    productoAgregado.cantidad = 1;
+    productosCarrito.push(productoAgregado);
+  }
 }
