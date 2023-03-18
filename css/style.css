@@ -1,4 +1,5 @@
-.pizza-imagen {
+.pizza-imagen,
+.carrito-pizza-imagen {
   height: 100px;
   width: 100px;
 }

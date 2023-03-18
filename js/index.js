@@ -22,6 +22,7 @@ const productos = [
   },
 ];
 
+const cCarrito = document.querySelector(".c-carrito");
 const container = document.querySelector("#container");
 let botonesComprar = document.querySelectorAll(".b-comprar");
 
@@ -41,7 +42,6 @@ function comprar() {
     container.append(div);
   });
   aBotonesComprar();
-  console.log(botonesComprar);
 }
 
 comprar();
@@ -58,14 +58,54 @@ const productosCarrito = [];
 
 function agregarAlCarrito(e) {
   const idBoton = e.currentTarget.id;
-
   const productoAgregado = productos.find(
     (producto) => producto.id === idBoton
   );
 
   if (productosCarrito.some((producto) => producto.id === idBoton)) {
+    const index = productosCarrito.findIndex(
+      (producto) => producto.id === idBoton
+    );
+    productosCarrito[index].cantidad++;
   } else {
     productoAgregado.cantidad = 1;
     productosCarrito.push(productoAgregado);
   }
+  localStorage.setItem("p-en-carrito", JSON.stringify(productosCarrito));
 }
+
+const productosEnCarrito = JSON.parse(localStorage.getItem("p-en-carrito"));
+const botonCarrito = document.querySelector("#b-carrito");
+
+function bcarrito() {
+  if (productosEnCarrito) {
+    cCarrito.innerHTML = " ";
+    productosEnCarrito.forEach((producto) => {
+      const div2 = document.createElement("div");
+      div2.classList.add("carrito-producto");
+      cCarrito.innerHTML += `
+        <img src=${producto.imagen} class="carrito-pizza-imagen" alt="${
+        producto.nombre
+      }" />
+        <div id="carrito-nombre">
+        <h2 class="carrito-pizza-nombre">${producto.nombre}</h2>
+        </div>
+        <div id="carrito-cantidad">
+        <p>${producto.cantidad}</p>
+        <div id="carrito-precio">
+        <h3 class="pizza-precio">$${producto.precio * producto.cantidad}</h3>  
+        </div>
+        <button class="carrito-p-eliminar" id="${
+          producto.id
+        } value="Eliminar">Eliminar</button></div>`;
+    });
+    if (productosEnCarrito.some((producto) => producto.id === idBoton)) {
+      const index = productosEnCarrito.findIndex(
+        (producto) => producto.id === idBoton
+      );
+      productosEnCarrito[index].cantidad++;
+    }
+  }
+}
+
+botonCarrito.addEventListener("click", bcarrito);
