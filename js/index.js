@@ -77,27 +77,20 @@ function agregarAlCarrito(e) {
 const productosEnCarrito = JSON.parse(localStorage.getItem("p-en-carrito"));
 const botonCarrito = document.querySelector("#b-carrito");
 
-function bcarrito() {
+function bcarrito(botonCarrito) {
   if (productosEnCarrito) {
-    cCarrito.innerHTML = " ";
     productosEnCarrito.forEach((producto) => {
       const div2 = document.createElement("div");
       div2.classList.add("carrito-producto");
-      cCarrito.innerHTML += `
+      cCarrito.innerHTML += `<div id="carrito-imagen>
         <img src=${producto.imagen} class="carrito-pizza-imagen" alt="${
         producto.nombre
-      }" />
+      }" /></div>
         <div id="carrito-nombre">
         <h2 class="carrito-pizza-nombre">${producto.nombre}</h2>
-        </div>
-        <div id="carrito-cantidad">
         <p>${producto.cantidad}</p>
-        <div id="carrito-precio">
         <h3 class="pizza-precio">$${producto.precio * producto.cantidad}</h3>  
-        </div>
-        <button class="carrito-p-eliminar" id="${
-          producto.id
-        } value="Eliminar">Eliminar</button></div>`;
+        </div>`;
     });
     if (productosEnCarrito.some((producto) => producto.id === idBoton)) {
       const index = productosEnCarrito.findIndex(
@@ -107,5 +100,4 @@ function bcarrito() {
     }
   }
 }
-
 botonCarrito.addEventListener("click", bcarrito);
